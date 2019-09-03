@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Acceuil</title>
+</head>
+<body>
+    <h3 style="text-align: center" >Buja Movies</h3>
+    <hr><hr>
+    <h2> <u>Ajouter le nouveau film</u> </h2>
+    <i style="color: green"> {{ msg }}</i>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form_view_film.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+    <hr>
+    <h2> <u>List des films disponibles ({{ nombre_film }} film(s))</u> </h2>
+    <table border="1">
+        <tr>
+            <td>Cover</td>
+            <td>Titre</td>
+            <td>Description</td>
+            <td>Official Trailers</td>
+        </tr>
+        {% for film_list in film_obj %}
+        <tr>
+            <td>
+                {% if film_list.cover %}
+                    <img src="{{ film_list.cover.url }}" alt="{{ film_list.titre }}" style="width: 50px;height: 50px;">
+                {% else %}
+                <span>No cover</span>
+                {% endif %}
+            </td>
+            <td>
+                <h3>
+                    <a href="{% url 'profil' film_list.slug %}">
+                        {{ film_list.titre }}
+                        [{{ film_list.resolution }}]
+                        {{ film_list.language }}
+                    </a>
+                </h3>
+            </td>
+            <td>
+                {{ film_list.description }}<br>Acteur : {{ film_list.acteur }}<br>Date de sortie : {{ film_list.date }}
+            </td>
+            <td>
+                {% if film_list.film %}
+                    <video src="{{ film_list.film.url }}" controls alt="{{ film_list.titre }}" style="width: 300px;">
+                {% else %}
+                <span>No film</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <hr> <font size="0.5">Hogi Copyright Reserved &copy</font> <hr>
+</body>
+</html>

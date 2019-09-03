@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Acceuil</title>
+</head>
+<body>
+    <h3 style="text-align: center" > <a href="{% url 'acc' %}">Buja Movies</a> </h3>
+    <hr><hr>
+    <p>{{ request.user }}</p>
+
+    <h2> <u>Tous les commentaires</u> {{ film_obj }} </h2>
+    <table border="1">
+        <tr>
+            <td>
+                {{ all_likes }} Like(s) and {{ all_dislikes }} Dislike(s) for {{ film_obj.titre }} film {{ mssg }}
+                <table border="1">
+                    <tr>
+                        <td colspan="2">
+                            <i style="color: green"> {{ mssg }} {{ mssg1 }} </i>
+                            {% if film_list.cover %}
+                                <img src="{{ film_im.cover.url }}" alt="{{ film_im }}" style="width: 50px;height: 50px;">
+                            {% else %}
+                            <span>No cover</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form_view_avi.as_p }}
+                                <input type="submit" name="like" value="Like" />
+                            </form>
+                        </td>
+                        <td>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form_view_avi1.as_p }}
+                                <input type="submit" name="dislike" value="Dislike" />
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        {% for com_list in comm_obj %}
+        <tr>
+            <td>
+                <i><b>{{ com_list.user }}</b>, le {{ com_list.date }} <br>{{ com_list.commentaire }}</i>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p> Votre commentaire ici </p>
+    <i style="color: green"> {{ msg }}</i>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form_view_comm.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+    <hr>
+    
+    <hr> <font size="0.5">Hogi Copyright Reserved &copy</font> <hr>
+</body>
+</html>
